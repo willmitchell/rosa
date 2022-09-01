@@ -3,61 +3,21 @@ name: Go
 on:
   push:
     branches: [ "verify-egress", "master" ]
-  release:
-    branches: [ "verify-egress" ]
-#    types: [created]
 
 jobs:
-
-  # run this job only on release events
-  release-linux-amd64:
-    name: release linux/amd64
+  build:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
-      - uses: wangyoucao577/go-release-action@v1.30
-        with:
-          project_path: cmd/rosa
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: linux
-          goarch: amd64
+    - uses: actions/checkout@v3
 
-  release-windows-amd64:
-    name: release windows/amd64
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: wangyoucao577/go-release-action@v1.30
-        with:
-          project_path: cmd/rosa
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          goos: windows
-          goarch: amd64
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
 
-#  build:
-#    runs-on: ubuntu-latest
-#    steps:
-#    - uses: actions/checkout@v3
-#
-#    - name: Set up Go
-#      uses: actions/setup-go@v3
-#      with:
-#        go-version: 1.19
-#
-#    - name: Build
-#      run: make
+    - name: Build
+      run: make
 
-#    - name: Test
-#      # test failure should not cause a failure of the whole workflow
-#      run: make test || true
-
-#    - name: ls
-#      # test failure should not cause a failure of the whole workflow
-#      run: ls -lla || true
-
-#    - name: Download a Build Artifact
-#      uses: actions/download-artifact@v3.0.0
-#      with:
-#        name: rosa
-#        path: rosa
+    - name: Test
+      # test failure should not cause a failure of the whole workflow
+      run: make test || true
