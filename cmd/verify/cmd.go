@@ -19,6 +19,7 @@ package verify
 import (
 	"github.com/spf13/cobra"
 
+	"github.com/openshift/rosa/cmd/verify/egress"
 	"github.com/openshift/rosa/cmd/verify/oc"
 	"github.com/openshift/rosa/cmd/verify/permissions"
 	"github.com/openshift/rosa/cmd/verify/quota"
@@ -34,4 +35,5 @@ func init() {
 	Cmd.AddCommand(oc.Cmd)
 	Cmd.AddCommand(permissions.Cmd)
 	Cmd.AddCommand(quota.Cmd)
+	Cmd.AddCommand(egress.Cmd)
 }
